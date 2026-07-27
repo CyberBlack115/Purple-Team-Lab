@@ -1,12 +1,11 @@
-# Command Injection Lab: Attack & Defense
+# Command Injection Lab: Attack 
 
 **Author:** @CyberBlack
 **Target Environment:** Local Ubuntu Server running DVWA in Docker
 **Attacker Machine:** Kali Linux 
 
 ## 🎯 Lab Goal
-To execute a Command Injection attack against a vulnerable web application, and then put on the SOC Analyst hat to see how this attack looks (and hides) in standard server logs.
-
+To execute a Command Injection attack against a vulnerable web application,
 ---
 
 ## 🔴 Phase 1: The Attack (Red Team)
@@ -27,19 +26,6 @@ The DVWA application has a tool that lets you ping an IP address. But it doesn't
 <img width="1226" height="272" alt="Screenshot 2026-06-14 193944" src="https://github.com/user-attachments/assets/7468873c-c1d8-411e-9ada-dfb23f9f2375" />
 
 ---
-
-## 🔵 Phase 2: The Defense & SOC Analysis (Blue Team)
-
-**Hunting the attack in the logs:**
-After the breach, I pulled the Apache web server logs straight from the Docker container to see what footprint I left behind.
-
-**The Blind Spot:**
-The logs only showed a standard HTTP `POST` request to `/vulnerabilities/exec/` with a `200 OK` success code. Because my payload was sent inside the *body* of the POST request, the standard web logs didn't record it. To a basic sysadmin, this attack looks like completely normal network traffic.
-
-*(Screenshot: Standard Apache logs missing the payload)*
-<img width="1268" height="651" alt="Screenshot 2026-06-14 212951" src="https://github.com/user-attachments/assets/5441b36b-daa2-4556-9223-8180a7fef0dc" />
-
-
 **How a SOC actually detects this:**
 Since basic web logs are blind to this, a SOC analyst would need better visibility. To catch this in the real world, I would need:
 * **A WAF (Web Application Firewall) or IDS (like Snort/Zeek):** Configured to inspect the *body* of POST requests for Linux shell characters like `;`, `|`, or `&&`.
