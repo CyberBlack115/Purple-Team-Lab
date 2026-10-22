@@ -1,6 +1,6 @@
 # 🛡️ Practical Nmap Recon & Network Enumeration Guide
 
-Here is my hands-on, field-tested reference guide to Nmap. I built this while running real-world security labs, enumerating targets, and auditing infrastructure. It covers modern scanning techniques, fingerprinting, and scripting.
+Here is my hands-on reference guide to Nmap. I built it while running labs in my own home lab, scanning my own machines and practicing enumeration. It covers modern scanning techniques, fingerprinting, and scripting.
 
 ***
 
@@ -112,8 +112,8 @@ nmap -A -p- -T4 -oA target_initial_scan 192.168.10.10
 
 ***
 
-## 💣 Real-World Go-To Scans
-Here are the exact one-liners I run during practical engagements and lab evaluations.
+## 💣 My Go-To Scans
+Here are the one-liners I run in my labs.
 
 ### 1. The Workhorse Recon Scan
 Runs a stealthy full-port scan, extracts versions, runs default scripts, optimizes speed, and saves everything. This is usually the very first command run against a new target.
@@ -135,3 +135,26 @@ Focuses explicitly on finding critical UDP infrastructure services while skippin
 ```bash
 sudo nmap -sU -Pn -p 53,67,123,161,500 -sV -T4 -oA udp_services 192.168.10.10
 ```
+
+***
+
+## 🎤 Be ready to answer
+**Q: SYN scan (`-sS`) vs connect scan (`-sT`)?**
+`-sS` sends a SYN, gets a reply, and drops the connection without finishing the handshake, so it's faster and quieter but needs root. `-sT` completes the full handshake using the normal OS network calls, so it works without root but is louder and easily logged.
+
+**Q: Why use `-p-`?**
+By default Nmap checks only the top 1,000 ports. Services can hide on odd ports, so `-p-` checks all 65,535.
+
+**Q: What does `-sV` actually do?**
+It connects to open ports and reads the banner or sends probes to work out the software name and version. The version is what lets you match a service to known vulnerabilities.
+
+**Q: When would you use `-Pn`?**
+When the target blocks ping, so Nmap thinks it's offline. `-Pn` says "treat it as up and scan anyway".
+
+**Q: Why is UDP scanning slow?**
+There's no handshake. A closed UDP port may send nothing back, so Nmap has to wait and retry before it can be sure.
+
+## 📸 Screenshot
+> 📸 **Screenshot goes here** — one of the scans from this page running in my terminal (`images/nmap-cheatsheet-scan.png`)
+>
+> <!-- When ready, delete this box and use: ![Nmap scan](images/nmap-cheatsheet-scan.png) -->

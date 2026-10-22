@@ -39,3 +39,26 @@ The filter successfully isolated the HTTP POST request directed at `/login.php`.
 This demonstrates a critical infrastructure flaw. To prevent credential harvesting:
 * **Enforce HTTPS:** All web traffic must be routed through TLS/SSL encryption (Port 443) so that packet payloads appear as unreadable ciphertext to anyone sniffing the network.
 * **HSTS Configuration:** Implement HTTP Strict Transport Security (HSTS) on the web server to force clients to connect via HTTPS, preventing downgrade attacks.
+
+---
+
+## 🎤 Be ready to answer
+**Q: Why could you read the password?**
+HTTP doesn't encrypt anything. The login form sent the username and password exactly as typed, so anyone who can see the traffic can read them.
+
+**Q: How was I able to see that traffic in my capture?**
+*(Answer in your own words. Be clear about how your setup worked, for example: I captured on my own Kali machine's interface while I logged in from it. On a real switched network you would only see other people's traffic with something extra, such as port mirroring, an ARP spoofing attack, or being on shared Wi-Fi.)*
+
+**Q: Capture filter vs display filter?**
+A capture filter decides what Wireshark records in the first place. A display filter only hides things from view after recording. I used a display filter, `http.request.method == "POST"`.
+
+**Q: Would HTTPS fully fix this?**
+It fixes the password exposure: the attacker sees encrypted data, not the login. They could still see which server you're talking to and how much traffic there is.
+
+**Q: What does HSTS do?**
+It tells the browser to always use HTTPS for that site, so an attacker can't trick it into dropping back to plain HTTP.
+
+## 📸 More screenshots (optional)
+> 📸 **Screenshot goes here** — the Wireshark capture interface selected, before starting (`images/wireshark-capture-start.png`)
+>
+> <!-- When ready, delete this box and use: ![Wireshark capture start](images/wireshark-capture-start.png) -->

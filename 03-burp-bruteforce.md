@@ -39,3 +39,26 @@ A SOC analyst looks for a high volume of authentication failures. In a SIEM (lik
 
 **Mitigation:**
 To stop this at the architecture level, the application must enforce account lockouts (e.g., locking the account for 15 minutes after 5 failed attempts) and implement rate limiting on the login endpoint.
+
+---
+
+## 🎤 Be ready to answer
+**Q: How did you know which password was right?**
+Burp showed the length of every response. The correct password produced a response of a different size from all the failures, so it stood out.
+
+**Q: What is a Sniper attack in Intruder?**
+It uses one payload list on one marked position, trying one value at a time. Perfect for a single field like a password when the username is known.
+
+**Q: Brute force vs password spraying vs credential stuffing?**
+Brute force tries many passwords on one account. Password spraying tries one or two common passwords across many accounts, so it avoids lockouts. Credential stuffing tries username and password pairs leaked from other breaches.
+
+**Q: Why did this attack work?**
+The login had no lockout and no rate limiting, so I could try as many guesses as I wanted. A weak password made it quick.
+
+**Q: How do you stop it?**
+Account lockout, rate limiting, MFA, strong password rules, and alerts on many failed logins.
+
+## 📸 More screenshots (optional)
+> 📸 **Screenshot goes here** — Burp's Intruder payload position set on the password field (`images/burp-payload-position.png`)
+>
+> <!-- When ready, delete this box and use: ![Burp payload position](images/burp-payload-position.png) -->
